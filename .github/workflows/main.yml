@@ -1,0 +1,23 @@
+name: Publish Docker Image
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+ 
+      - name: Build and Push Docker Image
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: |
+          docker build -t "${DOCKERHUB_USERNAME}/test-image" .
+          docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+          docker push "${DOCKERHUB_USERNAME}/test-image"
