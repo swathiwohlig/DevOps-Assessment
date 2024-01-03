@@ -23,5 +23,6 @@ jobs:
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
       - name: updating yaml file
         run :
+          ls -a
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
           cat ./nginx-deployment.yml
