@@ -29,6 +29,7 @@ jobs:
           git clone https://swathiwohlig:${{ secrets.TOKEN }}@github.com/swathiwohlig/DevOps-Assessment.git
           cd DevOps-Assessment
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
+          git remote set-url origin git@github.com:/swathiwohlig/DevOps-Assessment.git
           git add .
           git commit -m "updated"
           git push --set-upstream origin main
