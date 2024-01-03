@@ -26,7 +26,7 @@ jobs:
         run: |
           git config --global user.email "swathi.cherala@wohlig.com"
           git config --global user.name "swathiwohlig"
-          git clone https://swathiwohlig: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@github.com/swathiwohlig/DevOps-Assessment.git
+          git clone https://swathiwohlig:${{ secrets.TOKEN }}@github.com/swathiwohlig/DevOps-Assessment.git
           cd DevOps-Assessment
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
           git add .
