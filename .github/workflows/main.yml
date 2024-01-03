@@ -1,18 +1,18 @@
 name: Publish Docker Image
- 
+
 on:
   push:
     branches:
       - main
- 
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
- 
+
       - name: Build and Push Docker Image
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -21,6 +21,21 @@ jobs:
           docker build -t "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}" .
           docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
+
+      - name: Setup SSH Keys and known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_KEY }}"
+
+      - name: Some task that fetches dependencies
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: ./fetch-deps.sh
+
       - name: clone and update
         run: |
           git clone https://swathiwohlig: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@github.com/swathiwohlig/DevOps-Assessment.git
