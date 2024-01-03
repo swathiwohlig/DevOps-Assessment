@@ -21,13 +21,12 @@ jobs:
           docker build -t "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}" .
           docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
-
+      - name: list files
+        run: ls -a
       - name: clone and update
         run: |
           git config --global user.email "swathi.cherala@wohlig.com"
           git config --global user.name "swathiwohlig"
-          git clone https://swathiwohlig:${{ secrets.TOKEN }}@github.com/swathiwohlig/DevOps-Assessment.git
-          cd DevOps-Assessment
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
           git remote set-url origin git@github.com:/swathiwohlig/DevOps-Assessment.git
           git add .
