@@ -29,6 +29,8 @@ jobs:
           cat ./nginx-deployment.yml
       - name: commit changes
         run : |
+          git config --global user.email "swathi.wohlig@wohlig.com"
+          git config --global user.name "swathiwohlig"
           git add .
           git commit -m "updated"
           git push -u git@github.com:swathiwohlig/DevOps-Assessment.git main
