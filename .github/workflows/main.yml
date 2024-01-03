@@ -22,20 +22,6 @@ jobs:
           docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
 
-      - name: Setup SSH Keys and known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.SSH_KEY }}"
-
-      - name: Some task that fetches dependencies
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: ./fetch-deps.sh
-
       - name: clone and update
         run: |
           git clone https://swathiwohlig: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@github.com/swathiwohlig/DevOps-Assessment.git
@@ -45,4 +31,4 @@ jobs:
           git config --global user.name "swathiwohlig"
           git add .
           git commit -m "updated"
-          git push -u git@github.com:swathiwohlig/DevOps-Assessment.git main
+          git push --set-upstream origin main
