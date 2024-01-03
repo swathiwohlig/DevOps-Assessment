@@ -21,8 +21,8 @@ jobs:
           docker build -t "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}" .
           docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
-      - name: list
-        run: ls -a
+      - name: clone
+        run: git clone git clone https://swathiwohlig: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@github.com/swathiwohlig/DevOps-Assessment.git
       - name: updating yaml file
         run : |
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
