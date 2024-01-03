@@ -22,13 +22,13 @@ jobs:
           docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
       - name: list files
-        run: ls -a
+        run: | 
+          ls -a
+          yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
       - name: clone and update
         run: |
           git config --global user.email "swathi.cherala@wohlig.com"
           git config --global user.name "swathiwohlig"
-          yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
-          git remote set-url origin git@github.com:/swathiwohlig/DevOps-Assessment.git
           git add .
           git commit -m "updated"
-          git push --set-upstream origin main
+          git push
