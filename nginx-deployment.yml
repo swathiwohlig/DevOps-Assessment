@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: swathiwohlig/helloworld-img:latest
+          image: swathiwohlig/helloworld-img:2fb37114290c5f38ddc8ce91611718ac02fdf56d
           ports:
             - containerPort: 80
