@@ -23,7 +23,6 @@ jobs:
           docker push "${DOCKERHUB_USERNAME}/test-image:${{github.sha}}"
       - name: list files
         run: | 
-          ls -a
           yq e '.spec.template.spec.containers[0].image = "swathiwohlig/helloworld-img:${{ github.sha }}"' -i ./nginx-deployment.yml
       - name: clone and update
         run: |
